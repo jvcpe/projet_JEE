@@ -75,6 +75,16 @@ public class UserModel  implements Serializable{
 		this.role = role;
 	}
 
+	public UserModel() {
+		super();
+	}
+
+	public UserModel(String login, String password) {
+		super();
+		this.login = login;
+		this.password = password;
+	}
+
 	@Column(name="sur_name")
 	private String surName;
 	

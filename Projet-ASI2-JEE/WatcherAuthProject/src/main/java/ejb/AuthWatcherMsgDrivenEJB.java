@@ -1,6 +1,8 @@
 package ejb;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -30,6 +32,8 @@ public class AuthWatcherMsgDrivenEJB implements MessageListener {
 	
 	@EJB MessageSenderQueueLocal sender;
 	
+	@EJB UserDao dao;
+	
 	public AuthWatcherMsgDrivenEJB() {
 		dataContainer=new DataContainer();
 	}
@@ -56,14 +60,23 @@ public class AuthWatcherMsgDrivenEJB implements MessageListener {
 					System.out.println("login:"+user.getLogin());
 					System.out.println("pwd:"+user.getPassword());
 					
+					
+					List<UserModel> userList = new ArrayList<UserModel>();
+					
+					userList = dao.getUserModelList();
+					
+					System.out.println("User List: " + userList);
+					
 					Role currentTestRole=dataContainer.checkUser(user);
 					
 					if( Role.NONE==currentTestRole){
 						sender.sendMessage(user);
+						System.out.println("Role : NONE");
 					}
 					else{
 						user.setRole(currentTestRole);
 						sender.sendMessage(user);
+						System.out.println("Role : ELSE");
 					}
 					}
 				}
