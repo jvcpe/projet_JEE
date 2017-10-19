@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import fr.cpe.model.UserModel;
+import fr.cpe.model.enums.Role;
 
 @Stateless
 public class UserDao {
@@ -16,12 +17,13 @@ public class UserDao {
 	EntityManager primary;
 	
 	
-	public UserModel getUserModelById(int id){
+	public Role getUserRole(String login, String pwd){
 		
-		UserModel util = (UserModel)primary.createQuery("from utilisateurs u where u.id = :id")
-					.setParameter("id", id)
+		UserModel util = (UserModel)primary.createQuery("from UserModel u where u.login= :login and u.password= :pwd")
+					.setParameter("login", login).setParameter("pwd", pwd)
 					.getSingleResult();
-		return util;
+		Role role = util.getRole();
+		return role;
 	}
 	
 	public List<UserModel> getUserModelList(){

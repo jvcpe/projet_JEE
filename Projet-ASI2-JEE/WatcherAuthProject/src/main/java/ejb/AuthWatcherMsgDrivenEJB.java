@@ -63,20 +63,18 @@ public class AuthWatcherMsgDrivenEJB implements MessageListener {
 					
 					List<UserModel> userList = new ArrayList<UserModel>();
 					
-					userList = dao.getUserModelList();
-					
-					System.out.println("User List: " + userList);
+					//UserModel userRecup = dao.getUser(user.getLogin(),user.getPassword());
 					
 					Role currentTestRole=dataContainer.checkUser(user);
 					
+					System.out.println(currentTestRole);
+					
 					if( Role.NONE==currentTestRole){
 						sender.sendMessage(user);
-						System.out.println("Role : NONE");
 					}
 					else{
 						user.setRole(currentTestRole);
 						sender.sendMessage(user);
-						System.out.println("Role : ELSE");
 					}
 					}
 				}
